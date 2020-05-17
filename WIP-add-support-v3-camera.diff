@@ -1,194 +1,162 @@
 diff --git a/arch/arm/dts/Makefile b/arch/arm/dts/Makefile
-index ca663a86..78110308 100644
+index 78110308..ca663a86 100644
 --- a/arch/arm/dts/Makefile
 +++ b/arch/arm/dts/Makefile
-@@ -552,6 +552,7 @@ dtb-$(CONFIG_MACH_SUN8I_R40) += \
+@@ -552,7 +552,6 @@ dtb-$(CONFIG_MACH_SUN8I_R40) += \
  	sun8i-r40-bananapi-m2-ultra.dtb \
  	sun8i-v40-bananapi-m2-berry.dtb
  dtb-$(CONFIG_MACH_SUN8I_V3S) += \
-+	sun8i-v3s-camera.dtb \
+-	sun8i-v3s-camera.dtb \
  	sun8i-v3s-licheepi-zero.dtb
  dtb-$(CONFIG_MACH_SUN50I_H5) += \
  	sun50i-h5-bananapi-m2-plus.dtb \
 diff --git a/arch/arm/dts/sun8i-v3s-camera.dts b/arch/arm/dts/sun8i-v3s-camera.dts
-new file mode 100644
-index 00000000..eddba309
---- /dev/null
-+++ b/arch/arm/dts/sun8i-v3s-camera.dts
-@@ -0,0 +1,43 @@
-+/*
-+ *     THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-+ *     EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
-+ *     OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-+ *     NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
-+ *     HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
-+ *     WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-+ *     FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-+ *     OTHER DEALINGS IN THE SOFTWARE.
-+ */
-+
-+/dts-v1/;
-+#include "sun8i-v3s.dtsi"
-+#include "sunxi-common-regulators.dtsi"
-+
-+/ {
-+	model = "v3s camera";
-+	compatible = "v3-camera,v3s-camera", "allwinner,sun8i-v3s";
-+
-+	aliases {
-+		serial1 = &uart1;
-+	};
-+
-+	chosen {
-+		stdout-path = "serial1:115200n8";
-+	};
-+
-+};
-+
-+&mmc0 {
-+	broken-cd;
-+	bus-width = <4>;
-+        pinctrl-0 = <&mmc0_pins_a>;
-+	vmmc-supply = <&reg_vcc3v3>;
-+	status = "okay";
-+};
-+
-+&uart1 {
-+	pinctrl-0 = <&uart1_pins_a>;
-+	pinctrl-names = "default";
-+	status = "okay";
-+};
-+
+deleted file mode 100644
+index eddba309..00000000
+--- a/arch/arm/dts/sun8i-v3s-camera.dts
++++ /dev/null
+@@ -1,43 +0,0 @@
+-/*
+- *     THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+- *     EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+- *     OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+- *     NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+- *     HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+- *     WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+- *     FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+- *     OTHER DEALINGS IN THE SOFTWARE.
+- */
+-
+-/dts-v1/;
+-#include "sun8i-v3s.dtsi"
+-#include "sunxi-common-regulators.dtsi"
+-
+-/ {
+-	model = "v3s camera";
+-	compatible = "v3-camera,v3s-camera", "allwinner,sun8i-v3s";
+-
+-	aliases {
+-		serial1 = &uart1;
+-	};
+-
+-	chosen {
+-		stdout-path = "serial1:115200n8";
+-	};
+-
+-};
+-
+-&mmc0 {
+-	broken-cd;
+-	bus-width = <4>;
+-        pinctrl-0 = <&mmc0_pins_a>;
+-	vmmc-supply = <&reg_vcc3v3>;
+-	status = "okay";
+-};
+-
+-&uart1 {
+-	pinctrl-0 = <&uart1_pins_a>;
+-	pinctrl-names = "default";
+-	status = "okay";
+-};
+-
 diff --git a/arch/arm/dts/sun8i-v3s.dtsi b/arch/arm/dts/sun8i-v3s.dtsi
-index ebefc0fe..d5e043c3 100644
+index d5e043c3..ebefc0fe 100644
 --- a/arch/arm/dts/sun8i-v3s.dtsi
 +++ b/arch/arm/dts/sun8i-v3s.dtsi
-@@ -214,6 +214,13 @@
+@@ -214,13 +214,6 @@
  				bias-pull-up;
  			};
  
-+                        uart1_pins_a: uart1@0 {
-+                                pins = "PG6", "PG7";
-+                                function = "uart1";
-+                                bias-pull-up;
-+                        };
-+
-+
+-                        uart1_pins_a: uart1@0 {
+-                                pins = "PG6", "PG7";
+-                                function = "uart1";
+-                                bias-pull-up;
+-                        };
+-
+-
  			mmc0_pins_a: mmc0@0 {
  				pins = "PF0", "PF1", "PF2", "PF3",
  				       "PF4", "PF5";
 diff --git a/arch/arm/include/asm/arch-sunxi/gpio.h b/arch/arm/include/asm/arch-sunxi/gpio.h
-index a646ea6a..13b18ad3 100644
+index 13b18ad3..a646ea6a 100644
 --- a/arch/arm/include/asm/arch-sunxi/gpio.h
 +++ b/arch/arm/include/asm/arch-sunxi/gpio.h
-@@ -164,6 +164,7 @@ enum sunxi_gpio_number {
+@@ -164,7 +164,6 @@ enum sunxi_gpio_number {
  #define SUN8I_A33_GPB_UART0	3
  #define SUN8I_A83T_GPB_UART0	2
  #define SUN8I_V3S_GPB_UART0	3
-+#define SUN8I_V3S_GPG_UART1     2
+-#define SUN8I_V3S_GPG_UART1     2
  #define SUN50I_GPB_UART0	4
  
  #define SUNXI_GPC_NAND		2
 diff --git a/arch/arm/mach-sunxi/Kconfig b/arch/arm/mach-sunxi/Kconfig
-index be0822bf..b95f6b38 100644
+index b95f6b38..be0822bf 100644
 --- a/arch/arm/mach-sunxi/Kconfig
 +++ b/arch/arm/mach-sunxi/Kconfig
-@@ -363,10 +363,9 @@ choice
+@@ -363,9 +363,10 @@ choice
  config SUNXI_DRAM_DDR3_1333
  	bool "DDR3 1333"
  	select SUNXI_DRAM_DDR3
--	depends on !MACH_SUN8I_V3S
++	depends on !MACH_SUN8I_V3S
  	---help---
  	This option is the original only supported memory type, which suits
--	many H3/H5/A64 boards available now.
-+	many H3/H5/A64/V3 boards available now.
+-	many H3/H5/A64/V3 boards available now.
++	many H3/H5/A64 boards available now.
  
  config SUNXI_DRAM_LPDDR3_STOCK
  	bool "LPDDR3 with Allwinner stock configuration"
-@@ -994,7 +993,7 @@ config SPL_STACK_R_ADDR
+@@ -993,7 +994,7 @@ config SPL_STACK_R_ADDR
  
  config SPL_SPI_SUNXI
  	bool "Support for SPI Flash on Allwinner SoCs in SPL"
--	depends on MACH_SUN4I || MACH_SUN5I || MACH_SUN7I || MACH_SUNXI_H3_H5 || MACH_SUN50I || MACH_SUN8I_R40 || MACH_SUN50I_H6
-+	depends on MACH_SUN4I || MACH_SUN5I || MACH_SUN7I || MACH_SUNXI_H3_H5 || MACH_SUN50I || MACH_SUN8I_R40 || MACH_SUN50I_H6 || MACH_SUN8I_V3S
+-	depends on MACH_SUN4I || MACH_SUN5I || MACH_SUN7I || MACH_SUNXI_H3_H5 || MACH_SUN50I || MACH_SUN8I_R40 || MACH_SUN50I_H6 || MACH_SUN8I_V3S
++	depends on MACH_SUN4I || MACH_SUN5I || MACH_SUN7I || MACH_SUNXI_H3_H5 || MACH_SUN50I || MACH_SUN8I_R40 || MACH_SUN50I_H6
  	help
  	  Enable support for SPI Flash. This option allows SPL to read from
  	  sunxi SPI Flash. It uses the same method as the boot ROM, so does
 diff --git a/arch/arm/mach-sunxi/board.c b/arch/arm/mach-sunxi/board.c
-index b487b265..db9388ad 100644
+index db9388ad..b487b265 100644
 --- a/arch/arm/mach-sunxi/board.c
 +++ b/arch/arm/mach-sunxi/board.c
-@@ -125,6 +125,10 @@ static int gpio_init(void)
+@@ -125,10 +125,6 @@ static int gpio_init(void)
  	sunxi_gpio_set_cfgpin(SUNXI_GPH(12), SUN9I_GPH_UART0);
  	sunxi_gpio_set_cfgpin(SUNXI_GPH(13), SUN9I_GPH_UART0);
  	sunxi_gpio_set_pull(SUNXI_GPH(13), SUNXI_GPIO_PULL_UP);
-+#elif CONFIG_CONS_INDEX == 2 && defined(CONFIG_MACH_SUN8I_V3S)
-+        sunxi_gpio_set_cfgpin(SUNXI_GPG(6), SUN8I_V3S_GPG_UART1);
-+        sunxi_gpio_set_cfgpin(SUNXI_GPG(7), SUN8I_V3S_GPG_UART1);
-+        sunxi_gpio_set_pull(SUNXI_GPG(7), SUNXI_GPIO_PULL_UP);
+-#elif CONFIG_CONS_INDEX == 2 && defined(CONFIG_MACH_SUN8I_V3S)
+-        sunxi_gpio_set_cfgpin(SUNXI_GPG(6), SUN8I_V3S_GPG_UART1);
+-        sunxi_gpio_set_cfgpin(SUNXI_GPG(7), SUN8I_V3S_GPG_UART1);
+-        sunxi_gpio_set_pull(SUNXI_GPG(7), SUNXI_GPIO_PULL_UP);
  #elif CONFIG_CONS_INDEX == 2 && defined(CONFIG_MACH_SUN5I)
  	sunxi_gpio_set_cfgpin(SUNXI_GPG(3), SUN5I_GPG_UART1);
  	sunxi_gpio_set_cfgpin(SUNXI_GPG(4), SUN5I_GPG_UART1);
 diff --git a/configs/v3s_camera_defconfig b/configs/v3s_camera_defconfig
-new file mode 100644
-index 00000000..971d11be
---- /dev/null
-+++ b/configs/v3s_camera_defconfig
-@@ -0,0 +1,12 @@
-+CONFIG_ARM=y
-+CONFIG_ARCH_SUNXI=y
-+CONFIG_SPL=y
-+CONFIG_DRAM_ODT_EN=y
-+CONFIG_MACH_SUN8I_V3S=y
-+CONFIG_DRAM_CLK=647
-+CONFIG_SUNXI_DRAM_DDR3=y
-+CONFIG_SUNXI_DRAM_DDR3_1333=y
-+CONFIG_SPL_SPI_SUNXI=y
-+CONFIG_CONS_INDEX=2
-+CONFIG_DEFAULT_DEVICE_TREE="sun8i-v3s-camera"
-+# CONFIG_NETDEVICES is not set
+deleted file mode 100644
+index 971d11be..00000000
+--- a/configs/v3s_camera_defconfig
++++ /dev/null
+@@ -1,12 +0,0 @@
+-CONFIG_ARM=y
+-CONFIG_ARCH_SUNXI=y
+-CONFIG_SPL=y
+-CONFIG_DRAM_ODT_EN=y
+-CONFIG_MACH_SUN8I_V3S=y
+-CONFIG_DRAM_CLK=647
+-CONFIG_SUNXI_DRAM_DDR3=y
+-CONFIG_SUNXI_DRAM_DDR3_1333=y
+-CONFIG_SPL_SPI_SUNXI=y
+-CONFIG_CONS_INDEX=2
+-CONFIG_DEFAULT_DEVICE_TREE="sun8i-v3s-camera"
+-# CONFIG_NETDEVICES is not set
 diff --git a/include/configs/sunxi-common.h b/include/configs/sunxi-common.h
-index 5b0bec05..242c5103 100644
+index a8d82480..5b0bec05 100644
 --- a/include/configs/sunxi-common.h
 +++ b/include/configs/sunxi-common.h
-@@ -244,6 +244,8 @@ extern int soft_i2c_gpio_scl;
+@@ -244,8 +244,6 @@ extern int soft_i2c_gpio_scl;
  #endif
  #elif CONFIG_CONS_INDEX == 2 && defined(CONFIG_MACH_SUN5I)
  #define OF_STDOUT_PATH		"/soc@01c00000/serial@01c28400:115200"
-+#elif CONFIG_CONS_INDEX == 2 && defined(CONFIG_MACH_SUN8I_V3S) 
-+#define OF_STDOUT_PATH          "/soc@01c00000/serial@01c28400:115200"
+-#elif CONFIG_CONS_INDEX == 2 && defined(CONFIG_MACH_SUN8I_V3S) 
+-#define OF_STDOUT_PATH          "/soc@01c00000/serial@01c28400:115200"
  #elif CONFIG_CONS_INDEX == 3 && defined(CONFIG_MACH_SUN8I)
  #define OF_STDOUT_PATH		"/soc@01c00000/serial@01c28800:115200"
  #elif CONFIG_CONS_INDEX == 5 && defined(CONFIG_MACH_SUN8I)
-@@ -302,14 +304,14 @@ extern int soft_i2c_gpio_scl;
-  * 32M uncompressed kernel, 16M compressed kernel, 1M fdt,
-  * 1M script, 1M pxe and the ramdisk at the end.
-  */
--#ifndef CONFIG_MACH_SUN8I_V3S
--#define BOOTM_SIZE     __stringify(0xa000000)
--#define KERNEL_ADDR_R  __stringify(SDRAM_OFFSET(2000000))
--#define FDT_ADDR_R     __stringify(SDRAM_OFFSET(3000000))
--#define SCRIPT_ADDR_R  __stringify(SDRAM_OFFSET(3100000))
--#define PXEFILE_ADDR_R __stringify(SDRAM_OFFSET(3200000))
--#define RAMDISK_ADDR_R __stringify(SDRAM_OFFSET(3300000))
--#else
-+//#ifndef CONFIG_MACH_SUN8I_V3S
-+//#define BOOTM_SIZE     __stringify(0xa000000)
-+//#define KERNEL_ADDR_R  __stringify(SDRAM_OFFSET(2000000))
-+//#define FDT_ADDR_R     __stringify(SDRAM_OFFSET(3000000))
-+//#define SCRIPT_ADDR_R  __stringify(SDRAM_OFFSET(3100000))
-+//#define PXEFILE_ADDR_R __stringify(SDRAM_OFFSET(3200000))
-+//#define RAMDISK_ADDR_R __stringify(SDRAM_OFFSET(3300000))
-+//#else
- /*
-  * 64M RAM minus 2MB heap + 16MB for u-boot, stack, fb, etc.
-  * 16M uncompressed kernel, 8M compressed kernel, 1M fdt,
-@@ -321,7 +323,7 @@ extern int soft_i2c_gpio_scl;
- #define SCRIPT_ADDR_R  __stringify(SDRAM_OFFSET(1900000))
- #define PXEFILE_ADDR_R __stringify(SDRAM_OFFSET(1A00000))
- #define RAMDISK_ADDR_R __stringify(SDRAM_OFFSET(1B00000))
--#endif
-+//#endif
- #endif
- 
- #define MEM_LAYOUT_ENV_SETTINGS \
