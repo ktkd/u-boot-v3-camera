@@ -51,6 +51,8 @@ or just write to sdcard:
 dd if=u-boot-sunxi-with-spl.bin of=/dev/SDCARD bs=1024 seek=8
 ```
 
+## tips
+
 ttl pinout (115200,8n1):
 
 ![pinout](https://github.com/ktkd/u-boot-v3-camera/raw/master/camera_ttl.jpg)
