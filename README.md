@@ -4,6 +4,7 @@ add support of allwinner V3 cpu action camera to mainline u-boot
 
 **WIP**
 Currently only SPL part of uboot runs normally.
+
 from FEL:
 
 ```
